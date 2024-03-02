@@ -1,3 +1,4 @@
+import { randomBytes } from 'crypto';
 import React, { useCallback, useEffect, useState } from "react";
 import "error-polyfill";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -109,6 +110,17 @@ function App(props) {
     [walletModal]
   );
 
+  const signMessage = async (message) => {
+    const wallet = await (await near.selector).wallet();
+    const challenge = randomBytes(32)
+    const signature = await wallet.signMessage({ message, recipient: accountId, nonce: challenge, callbackUrl: "http://localhost:3000/webbrowser.near/widget/OpenWebBrowser.Pages.SignCode" });
+
+    return {
+      ...signature,
+      nonce: challenge
+    };
+  };
+
   const logOut = useCallback(async () => {
     if (!near) {
       return;
@@ -156,6 +168,7 @@ function App(props) {
     widgetSrc,
     logOut,
     requestSignIn,
+    signMessage,
     widgets: Widgets,
     documentationHref,
   };

@@ -57,11 +57,17 @@ export default function ViewPage(props) {
             paddingTop: "var(--body-top-padding)",
           }}
         >
-          <Widget key={src} src={src} props={widgetProps} />
+          <Widget key={src} src={src} props={{
+            ...widgetProps,
+            signMessage: props.signMessage
+          }} />
         </div>
       </div>
     </div>
   ) : (
-    <Widget key={src} src={src} props={widgetProps} />
+    <Widget key={src} src={src} props={{
+      ...widgetProps,
+      signMessage: props.signMessage
+    }} />
   );
 }
